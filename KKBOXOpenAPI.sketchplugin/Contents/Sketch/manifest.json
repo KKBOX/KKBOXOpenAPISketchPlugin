@@ -1,0 +1,220 @@
+{
+  "author" : "KKBOX iOS 開發部",
+  "commands" : [
+    {
+      "script" : "script.cocoascript",
+      "name" : "設定",
+      "handlers" : {
+        "run" : "chnageSettings"
+      },
+      "identifier" : "com.kkbox.sketch.chnageSettings"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取華語歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchMandarinChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchMandarinChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取西洋歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchWesternChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchWesternChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取日語歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchJapaneseChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchJapaneseChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取韓語歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchKoreanChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchKoreanChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取台語歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchHokkienChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchHokkienChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取粵語歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchCantoneseChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchCantoneseChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取爵士歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchJazzChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchJazzChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取搖滾歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchRockChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchRockChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取電子歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchElectronicChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchElectronicChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取嘻哈歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchHipHopChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchHipHopChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取RNB歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchHipHopRNBChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchRNBChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取另類/獨立歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchAlternativeChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchAlternativeChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取靈魂歌曲排行榜",
+      "handlers" : {
+        "run" : "onFetchSoulChart"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchSoulChart"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取推薦歌單（列表）",
+      "handlers" : {
+        "run" : "onFetchFeaturePlaylistList"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchFeaturePlaylistList"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "抓取推薦歌單（卡片）",
+      "handlers" : {
+        "run" : "onFetchFeaturePlaylistFull"
+      },
+      "identifier" : "com.kkbox.sketch.onFetchFeaturePlaylistFull"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "搜尋歌曲",
+      "handlers" : {
+        "run" : "onSearchSong"
+      },
+      "identifier" : "com.kkbox.sketch.onSearchSong"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "搜尋專輯",
+      "handlers" : {
+        "run" : "onSearchAlbum"
+      },
+      "identifier" : "com.kkbox.sketch.onSearchAlbum"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "搜尋歌手",
+      "handlers" : {
+        "run" : "onSearchArtists"
+      },
+      "identifier" : "com.kkbox.sketch.onSearchArtists"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "搜尋歌單（列表）",
+      "handlers" : {
+        "run" : "onSearchPlaylist"
+      },
+      "identifier" : "com.kkbox.sketch.onSearchPlaylist"
+    },
+    {
+      "script" : "script.cocoascript",
+      "name" : "搜尋歌單（卡片）",
+      "handlers" : {
+        "run" : "onSearchPlaylistCards"
+      },
+      "identifier" : "com.kkbox.sketch.onSearchPlaylistCards"
+    }
+
+  ],
+  "menu" : {
+      "items": [
+          "com.kkbox.sketch.chnageSettings",
+          {
+            "title" : "抓取歌曲排行榜",
+            "items" : [
+                    "com.kkbox.sketch.onFetchMandarinChart",
+                    "com.kkbox.sketch.onFetchWesternChart",
+                    "com.kkbox.sketch.onFetchKoreanChart",
+                    "com.kkbox.sketch.onFetchJapaneseChart",
+                    "com.kkbox.sketch.onFetchHokkienChart",
+                    "com.kkbox.sketch.onFetchCantoneseChart",
+                    "com.kkbox.sketch.onFetchJazzChart",
+                    "com.kkbox.sketch.onFetchRockChart",
+                    "com.kkbox.sketch.onFetchElectronicChart",
+                    "com.kkbox.sketch.onFetchHipHopChart",
+                    "com.kkbox.sketch.onFetchRNBChart",
+                    "com.kkbox.sketch.onFetchAlternativeChart",
+                    "com.kkbox.sketch.onFetchSoulChart",
+                  ]
+          },
+          {
+            "title" : "抓取推薦歌單",
+            "items" : [
+                    "com.kkbox.sketch.onFetchFeaturePlaylistList",
+                    "com.kkbox.sketch.onFetchFeaturePlaylistFull",
+                  ]
+          },
+          {
+            "title" : "搜尋",
+            "items" : [
+                    "com.kkbox.sketch.onSearchSong",
+                    "com.kkbox.sketch.onSearchAlbum",
+                    "com.kkbox.sketch.onSearchArtists",
+                    "com.kkbox.sketch.onSearchPlaylist",
+                    "com.kkbox.sketch.onSearchPlaylistCards"
+                  ]
+          }
+      ]
+  },
+  "identifier" : "com.example.sketch.88fcea9f-80f5-44f4-8e5e-9d97fe6eb0ab",
+  "version" : "1.0",
+  "description" : "提供 KKBOX Open API 的各項功能",
+  "authorEmail" : "zonbleyang@kkbox.com",
+  "name" : "KKBOX Open API",
+  "homepage": "https://docs.kkbox.codes"
+}

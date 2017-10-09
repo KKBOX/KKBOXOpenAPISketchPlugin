@@ -1,0 +1,332 @@
+//
+// script.cocoascript
+//
+// Copyright (c) 2017 KKBOX Taiwan Co., Ltd. All Rights Reserved.
+//
+
+@import 'kkbox.cocoascript'
+@import 'renderer.cocoascript'
+
+var _sharedInstance = null;
+
+var kkbox_territory = 'kkbox_territory'
+var kkbox_api_key = 'kkbox_api_key'
+var kkbox_api_secret = 'kkbox_api_secret'
+
+var instance = function() {
+    if (_sharedInstance == nil) {
+
+        var apiKey = [[NSUserDefaults standardUserDefaults] stringForKey:kkbox_api_key]
+        if (!apiKey || apiKey == "") {
+            return nil
+        }
+        var apiSecret = [[NSUserDefaults standardUserDefaults] stringForKey:kkbox_api_secret]
+        if (!apiSecret || apiSecret == "") {
+            return nil
+        }
+        print(apiKey)
+        print(apiSecret)
+        _sharedInstance = kkbox(apiKey, apiSecret)
+        _sharedInstance.fetch_access_token_by_client_credentials()
+
+        var territory = [[NSUserDefaults standardUserDefaults] stringForKey:"kkbox_territory"]
+        if (!territory) {
+            territory = "TW"
+            [[NSUserDefaults standardUserDefaults] setObject:territory forKey:"kkbox_territory"]
+        }
+        _sharedInstance.territory = territory
+    }
+    return _sharedInstance
+}
+
+var chnageSettings = function(context) {
+    var window = [[NSWindow alloc] init]
+    window.setTitle("Settings")
+    [window setFrame:NSMakeRect(0, 0, 500, 200) display:false]
+    var promptField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)]
+    [promptField setEditable:false]
+    [promptField setBordered:false]
+    [promptField setDrawsBackground:false]
+    [promptField setStringValue:"Territory:"]
+    [promptField sizeToFit]
+    [promptField setFrame:NSMakeRect(20, 140, [promptField frame].size.width, [promptField frame].size.height)]
+    [[window contentView] addSubview:promptField]
+
+    var popupButton = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(0, 0, 80, 30)]
+    var titles = ["TW", "HK", "SG", "MY", "JP"]
+    [popupButton addItemsWithTitles:titles]
+    [popupButton sizeToFit]
+    [popupButton setFrame:NSMakeRect([promptField frame].size.width + 50, 140, [popupButton frame].size.width, [popupButton frame].size.height)]
+    var territory = [[NSUserDefaults standardUserDefaults] stringForKey:kkbox_territory]
+    if (!territory) {
+        territory = "TW"
+        [[NSUserDefaults standardUserDefaults] setObject:territory forKey:kkbox_territory]
+    }
+    [popupButton selectItemWithTitle:territory]
+    [[window contentView] addSubview:popupButton]
+
+    var apiKeyField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)]
+    [apiKeyField setEditable:false]
+    [apiKeyField setBordered:false]
+    [apiKeyField setDrawsBackground:false]
+    [apiKeyField setStringValue:"API Key:"]
+    [apiKeyField sizeToFit]
+    [apiKeyField setFrame:NSMakeRect(20, 110, [apiKeyField frame].size.width, [apiKeyField frame].size.height)]
+    [[window contentView] addSubview:apiKeyField]
+
+    var apiKeyTextField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 300, 24)]
+    [apiKeyTextField setFrame:NSMakeRect([apiKeyField frame].size.width + 30, 110, [apiKeyTextField frame].size.width, [apiKeyTextField frame].size.height)]
+    var apiKey = [[NSUserDefaults standardUserDefaults] stringForKey:kkbox_api_key]
+    if (!apiKey) {
+        apiKey = ""
+        [[NSUserDefaults standardUserDefaults] setObject:apiKey forKey:kkbox_api_key]
+    }
+    [apiKeyTextField setStringValue:apiKey]
+    [[window contentView] addSubview:apiKeyTextField]
+
+    var apiSecretField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)]
+    [apiSecretField setEditable:false]
+    [apiSecretField setBordered:false]
+    [apiSecretField setDrawsBackground:false]
+    [apiSecretField setStringValue:"API Secret:"]
+    [apiSecretField sizeToFit]
+    [apiSecretField setFrame:NSMakeRect(20, 80, [apiSecretField frame].size.width, [apiSecretField frame].size.height)]
+    [[window contentView] addSubview:apiSecretField]
+
+    var apiSecretTextField = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 300, 24)]
+    [apiSecretTextField setFrame:NSMakeRect([apiSecretField frame].size.width + 30, 80, [apiSecretTextField frame].size.width, [apiSecretTextField frame].size.height)]
+    var apiSecret = [[NSUserDefaults standardUserDefaults] stringForKey:kkbox_api_secret]
+    if (!apiSecret) {
+        apiSecret = ""
+        [[NSUserDefaults standardUserDefaults] setObject:apiSecret forKey:kkbox_api_secret]
+    }
+    [apiSecretTextField setStringValue:apiSecret]
+    [[window contentView] addSubview:apiSecretTextField]
+
+    var okButton = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)]
+    [okButton setTitle:"OK"]
+    [okButton setBezelStyle:NSRoundedBezelStyle]
+    [okButton sizeToFit]
+    [okButton setFrame:NSMakeRect([window frame].size.width - [okButton frame].size.width - 20, 14, [okButton frame].size.width, [okButton frame].size.height)]
+    [okButton setKeyEquivalent:"\r"] // return key
+    [okButton setCOSJSTargetFunction:function(sender) {
+        var territory = popupButton.titleOfSelectedItem()
+        [[NSUserDefaults standardUserDefaults] setObject:territory forKey:kkbox_territory]
+        var apiKey = [apiKeyTextField stringValue]
+        [[NSUserDefaults standardUserDefaults] setObject:apiKey forKey:kkbox_api_key]
+        var apiSecret = [apiSecretTextField stringValue]
+        [[NSUserDefaults standardUserDefaults] setObject:apiSecret forKey:kkbox_api_secret]
+        _sharedInstance = nil
+        var k = instance()
+        [window orderOut:nil]
+        [NSApp stopModal]
+    }];
+    [[window contentView] addSubview:okButton]
+
+    [NSApp runModalForWindow:window]
+}
+
+// Song Charts
+
+var _renderPlaylist = function(context, playlist_id) {
+    var k = instance()
+    if (k == nil) {
+        chnageSettings()
+        return
+    }
+    var result = k.fetch_playlist(playlist_id)
+    var songs = result.tracks.data
+    render_songs(context, songs)
+}
+
+var onFetchMandarinChart = function(context) {
+    _renderPlaylist(context, charts.mandrin.id)
+}
+
+var onFetchWesternChart = function(context) {
+    _renderPlaylist(context, charts.western.id)
+}
+
+var onFetchJapaneseChart = function(context) {
+    _renderPlaylist(context, charts.japanese.id)
+}
+
+var onFetchKoreanChart = function(context) {
+    _renderPlaylist(context, charts.korean.id)
+}
+
+var onFetchHokkienChart = function(context) {
+    _renderPlaylist(context, charts.hokkien.id)
+}
+
+var onFetchCantoneseChart = function(context) {
+    _renderPlaylist(context, charts.cantonese.id)
+}
+
+var onFetchJazzChart = function(context) {
+    _renderPlaylist(context, charts.jazz.id)
+}
+
+var onFetchRockChart = function(context) {
+    _renderPlaylist(context, charts.rock.id)
+}
+
+var onFetchElectronicChart = function(context) {
+    _renderPlaylist(context, charts.electronic.id)
+}
+
+var onFetchHipHopChart = function(context) {
+    _renderPlaylist(context, charts.hiphop.id)
+}
+
+var onFetchRNBChart = function(context) {
+    _renderPlaylist(context, charts.rnb.id)
+}
+
+var onFetchAlternativelChart = function(context) {
+    _renderPlaylist(context, charts.alternative.id)
+}
+
+var onFetchSoulChart = function(context) {
+    _renderPlaylist(context, charts.soul.id)
+}
+
+// Feature Playlists
+
+var onFetchFeaturePlaylistList = function(context) {
+    var k = instance()
+    if (k == nil) {
+        chnageSettings()
+        return
+    }
+    var result = k.fetch_feature_playlists()
+    var playlists = result.data
+    render_playlist_list(context, playlists)
+}
+
+var onFetchFeaturePlaylistFull = function(context) {
+    var k = instance()
+    if (k == nil) {
+        chnageSettings()
+        return
+    }
+    var playlists = k.fetch_feature_playlists().data
+    var full_playlists = []
+    var playlist_count = 5
+    if ([playlists count] < playlist_count) {
+        playlist_count = [playlists count]
+    }
+    for (i = 0; i < playlist_count; i++) {
+        var playlist = playlists[i]
+        print(playlist.id)
+        var full_playlist = k.fetch_playlist(playlist.id.toString())
+        full_playlists.push(full_playlist)
+    }
+    log(full_playlists)
+    render_playlist_cards(context, full_playlists)
+}
+
+// Search
+
+var onSearchSong = function(context) {
+    var k = instance()
+    if (k == nil) {
+        chnageSettings()
+        return
+    }
+
+    var sketch = context.api()
+    var keyword = sketch.getStringFromUser("Your keyword:", "")
+    if (keyword == nil || keyword == "") {
+        return
+    }
+    var result = k.search_song(keyword)
+    var tracks = result.tracks
+    if (![tracks isKindOfClass: [NSArray class]]) {
+        tracks = tracks.data
+    }
+    render_songs(context, tracks)
+}
+
+var onSearchAlbum = function(context) {
+    var k = instance()
+    if (k == nil) {
+        chnageSettings()
+        return
+    }
+
+    var sketch = context.api()
+    var keyword = sketch.getStringFromUser("Your keyword:", "")
+    if (keyword == nil || keyword == "") {
+        return
+    }
+    var result = k.search_album(keyword)
+    var albums = result.albums
+    if (![albums isKindOfClass: [NSArray class]]) {
+        albums = albums.data
+    }
+    render_albums(context, albums)
+}
+
+var onSearchArtists = function(context) {
+    var k = instance()
+    if (k == nil) {
+        chnageSettings()
+        return
+    }
+
+    var sketch = context.api()
+    var keyword = sketch.getStringFromUser("Your keyword:", "")
+    if (keyword == nil || keyword == "") {
+        return
+    }
+    var result = k.search_artist(keyword)
+    var artists = result.artists
+    if (![artists isKindOfClass: [NSArray class]]) {
+        artists = artists.data
+    }
+    render_artists(context, artists)
+}
+
+var onSearchPlaylist = function(context) {
+    var sketch = context.api()
+    var keyword = sketch.getStringFromUser("Your keyword:", "")
+    if (keyword == nil || keyword == "") {
+        return
+    }
+    var k = instance()
+    var result = k.search_playlist(keyword)
+    var playlists = result.playlists
+    if (![playlists isKindOfClass: [NSArray class]]) {
+        playlists = playlists.data
+    }
+    render_playlist_list(context, playlists)
+}
+
+var onSearchPlaylistCards = function(context) {
+    var sketch = context.api()
+    var keyword = sketch.getStringFromUser("Your keyword:", "")
+    if (keyword == nil || keyword == "") {
+        return
+    }
+    var k = instance()
+    var result = k.search_playlist(keyword)
+
+    var playlists = result.playlists
+    if (![playlists isKindOfClass: [NSArray class]]) {
+        playlists = playlists.data
+    }
+
+    var full_playlists = []
+    var count = playlists.length
+    if (count > 5) {
+        count = 5
+    }
+    for (i = 0; i < count; i++) {
+        var playlist = playlists[i]
+        print(playlist.id)
+        var full_playlist = k.fetch_playlist(playlist.id.toString())
+        full_playlists.push(full_playlist)
+    }
+    render_playlist_cards(context, full_playlists)
+}

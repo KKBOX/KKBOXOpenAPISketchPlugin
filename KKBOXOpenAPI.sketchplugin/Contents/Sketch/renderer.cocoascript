@@ -1,0 +1,302 @@
+//
+// renderer.cocoascript
+//
+// Copyright (c) 2017 KKBOX Taiwan Co., Ltd. All Rights Reserved.
+//
+
+var get_center = function(context) {
+    var doc = context.document
+    var contentDrawView = doc.currentView();
+    var midX = Math.round((contentDrawView.frame().size.width/2 - contentDrawView.horizontalRuler().baseLine())/contentDrawView.zoomValue());
+    var midY = Math.round((contentDrawView.frame().size.height/2 - contentDrawView.verticalRuler().baseLine())/contentDrawView.zoomValue());
+    return [midX, midY]
+}
+
+var render_albums = function(context, albums) {
+    var doc = context.document
+    var count = albums.length
+    var max = 10
+    if (count > max) {
+        count = max
+    }
+
+    var center = get_center(context)
+    var totalGroupFrame = NSMakeRect(center[0], center[1], 435, 80 * count)
+    var totalGroup = [[MSLayerGroup alloc] initWithFrame:totalGroupFrame]
+    totalGroup.name = "Albums"
+
+    for (index = 0; index < count; ++index) {
+        var album = albums[index]
+
+        var groupFrame = NSMakeRect(0, 80 * index, 435, 80)
+        var group = [[MSLayerGroup alloc] initWithFrame:groupFrame]
+
+        var imageURL = album.images[1].url
+        var imageFrame = NSMakeRect(0, 0, 78, 78)
+        var imageLayer = [[MSBitmapLayer alloc] initWithFrame:imageFrame]
+        var URL = [NSURL URLWithString:toNSString(imageURL)]
+        var image = [[NSImage alloc] initWithContentsOfURL:URL]
+        var imageData = [[MSImageData alloc] initWithImage:image convertColorSpace:true]
+        [imageLayer setImage:imageData]
+
+        var name = album.name
+        group.name = name
+        var albumName = album.name
+        var albumNameFrame = NSMakeRect(90, 0, 350, 20);
+        var albumNameField = [[MSTextLayer alloc] initWithFrame:albumNameFrame]
+        albumNameField.name = "album name"
+        albumNameField.setStringValue(name)
+        albumNameField.setFont([NSFont boldSystemFontOfSize:18])
+
+        var artistName = album.artist.name
+        var artistNameFrame = NSMakeRect(90, 22, 350, 20);
+        var artistNameField = [[MSTextLayer alloc] initWithFrame:artistNameFrame]
+        artistNameField.name = "artist name"
+        artistNameField.setStringValue(artistName)
+        artistNameField.setFontSize(16)
+
+        var releaseDate = album.release_date
+        if (releaseDate == null) {
+            releaseDate = ""
+        }
+        var releaseDateFrame = NSMakeRect(90, 44, 350, 20);
+        var releaseDateField = [[MSTextLayer alloc] initWithFrame:releaseDateFrame]
+        releaseDateField.name = "release date"
+        releaseDateField.setStringValue(releaseDate)
+        releaseDateField.setFontSize(16)
+
+        [group addLayers:[imageLayer, albumNameField, artistNameField, releaseDateField]]
+        [totalGroup addLayers:[group]]
+    }
+    doc.currentPage().addLayers([totalGroup])
+}
+
+
+var render_artists = function(context, artists) {
+    var doc = context.document
+    var count = artists.length
+    var max = 10
+    if (count > max) {
+        count = max
+    }
+
+    var center = get_center(context)
+    var totalGroupFrame = NSMakeRect(center[0], center[1], 435, 80 * count)
+    var totalGroup = [[MSLayerGroup alloc] initWithFrame:totalGroupFrame]
+    totalGroup.name = "Artists"
+
+    for (index = 0; index < count; ++index) {
+        var artist = artists[index]
+
+        var groupFrame = NSMakeRect(0, 80 * index, 435, 80)
+        var group = [[MSLayerGroup alloc] initWithFrame:groupFrame]
+
+        var imageURL = artist.images[1].url
+        var imageFrame = NSMakeRect(0, 0, 78, 78)
+        var imageLayer = [[MSBitmapLayer alloc] initWithFrame:imageFrame]
+        var URL = [NSURL URLWithString:toNSString(imageURL)]
+        var image = [[NSImage alloc] initWithContentsOfURL:URL]
+        var imageData = [[MSImageData alloc] initWithImage:image convertColorSpace:true]
+        [imageLayer setImage:imageData]
+
+        var newRect = [[MSOvalShape alloc] initWithFrame:imageFrame]
+        var rectGroup = MSShapeGroup.shapeWithPath(newRect);
+        var layerArray = MSLayerArray.arrayWithLayers([rectGroup, imageLayer])
+        [group addLayers:[rectGroup, imageLayer]]
+        var grouped = MSMaskWithShape.createMaskWithShapeForLayers(layerArray)
+
+        var name = artist.name
+        group.name = name
+        var artistNameFrame = NSMakeRect(90, 0, 350, 20);
+        var artistNameField = [[MSTextLayer alloc] initWithFrame:artistNameFrame]
+        artistNameField.name = "artist name"
+        artistNameField.setStringValue(name)
+        artistNameField.setFont([NSFont boldSystemFontOfSize:18])
+
+        [group addLayers:[artistNameField]]
+        [totalGroup addLayers:[group]]
+    }
+    doc.currentPage().addLayers([totalGroup])
+}
+
+var render_songs = function(context, songs) {
+    var doc = context.document
+    var count = songs.length
+    if (count > 10) {
+        count = 10;
+    }
+
+    var center = get_center(context)
+    var totalGroupFrame = NSMakeRect(center[0], center[1], 435, 80 * count)
+    var totalGroup = [[MSLayerGroup alloc] initWithFrame:totalGroupFrame]
+    totalGroup.name = "songs"
+
+    for (index = 0; index < count; ++index) {
+        var song = songs[index]
+        print(song)
+
+        var groupFrame = NSMakeRect(0, 80 * index, 435, 80)
+        var group = [[MSLayerGroup alloc] initWithFrame:groupFrame]
+
+        var imageURL = song.album.images[1].url
+        var imageFrame = NSMakeRect(0, 0, 78, 78)
+        var imageLayer = [[MSBitmapLayer alloc] initWithFrame:imageFrame]
+        var URL = [NSURL URLWithString:toNSString(imageURL)]
+        var image = [[NSImage alloc] initWithContentsOfURL:URL]
+        var imageData = [[MSImageData alloc] initWithImage:image convertColorSpace:true]
+        [imageLayer setImage:imageData]
+
+        var name = song.name
+        group.name = name
+        var songNameFrame = NSMakeRect(90, 0, 350, 20);
+        var songNameField = [[MSTextLayer alloc] initWithFrame:songNameFrame]
+        songNameField.name = "song name"
+        songNameField.setStringValue(name)
+        songNameField.setFont([NSFont boldSystemFontOfSize:18])
+
+        var artistName = song.album.artist.name
+        var artistNameFrame = NSMakeRect(90, 22, 350, 20);
+        var artistNameField = [[MSTextLayer alloc] initWithFrame:artistNameFrame]
+        artistNameField.name = "album name"
+        artistNameField.setStringValue(artistName)
+        artistNameField.setFontSize(16)
+
+        var albumName = song.album.name
+        var albumNameFrame = NSMakeRect(90, 44, 350, 20);
+        var albumNameField = [[MSTextLayer alloc] initWithFrame:albumNameFrame]
+        albumNameField.name = "artist name"
+        albumNameField.setStringValue(albumName)
+        albumNameField.setFontSize(16)
+
+        [group addLayers:[imageLayer, songNameField, artistNameField, albumNameField]]
+        [totalGroup addLayers:[group]]
+    }
+    doc.currentPage().addLayers([totalGroup])
+}
+
+
+var render_playlist_list = function(context, playlists) {
+    var doc = context.document
+    var count = playlists.length
+    if (count > 10) {
+        count = 10;
+    }
+
+    var center = get_center(context)
+    var totalGroupFrame = NSMakeRect(center[0], center[1], 435, 80 * count)
+    var totalGroup = [[MSLayerGroup alloc] initWithFrame:totalGroupFrame]
+    totalGroup.name = "playlists"
+
+    for (index = 0; index < count; ++index) {
+        var playlist = playlists[index]
+
+        var groupFrame = NSMakeRect(0, 80 * index, 435, 80)
+        var group = [[MSLayerGroup alloc] initWithFrame:groupFrame]
+
+        var imageURL = playlist.images[1].url
+        var imageFrame = NSMakeRect(0, 0, 78, 78)
+        var imageLayer = [[MSBitmapLayer alloc] initWithFrame:imageFrame]
+        var URL = [NSURL URLWithString:toNSString(imageURL)]
+        var image = [[NSImage alloc] initWithContentsOfURL:URL]
+        var imageData = [[MSImageData alloc] initWithImage:image convertColorSpace:true]
+        [imageLayer setImage:imageData]
+
+        var name = playlist.title
+        group.name = name
+        var playlistNameFrame = NSMakeRect(90, 0, 350, 20);
+        var playlistField = [[MSTextLayer alloc] initWithFrame:playlistNameFrame]
+        playlistField.name = "playlist name"
+        playlistField.setStringValue(name)
+        playlistField.setFont([NSFont boldSystemFontOfSize:18])
+
+        [group addLayers:[imageLayer, playlistField]]
+        [totalGroup addLayers:[group]]
+    }
+    doc.currentPage().addLayers([totalGroup])
+}
+
+
+var render_playlist_cards = function(context, playlists) {
+    var max = 5
+    var doc = context.document
+    var count = playlists.length
+    if (count > max) {
+        count = max;
+    }
+
+    var center = get_center(context)
+    var totalGroupFrame = NSMakeRect(center[0], center[1], 343, 230 * count)
+    var totalGroup = [[MSLayerGroup alloc] initWithFrame:totalGroupFrame]
+    totalGroup.name = "playlists"
+
+    for (index = 0; index < count; ++index) {
+        var playlist = playlists[index]
+
+        var groupFrame = NSMakeRect(0, 230 * index, 343, 250)
+        var group = [[MSLayerGroup alloc] initWithFrame:groupFrame]
+
+        var backgroundImageURLString = playlist.images[1].url
+        var backgroundImageFrame = NSMakeRect(0, 0, 343, 172)
+        var imageLayer = [[MSBitmapLayer alloc] initWithFrame:backgroundImageFrame]
+        var backgroundImageURL = [NSURL URLWithString:toNSString(backgroundImageURLString)]
+        var backgroundImage = [[NSImage alloc] initWithContentsOfURL:backgroundImageURL]
+        var backgroundImageData = [[MSImageData alloc] initWithImage:backgroundImage convertColorSpace:true]
+        imageLayer.name = "Background Image"
+        imageLayer.image = backgroundImageData
+
+        var newRect = [[MSRectangleShape alloc] initWithFrame:backgroundImageFrame]
+        var maskLayer = MSShapeGroup.shapeWithPath(newRect);
+        maskLayer.style().blur().setType(3)
+        maskLayer.style().blur().setIsEnabled(true)
+        maskLayer.name = "Mask"
+        var fill = [[MSStyleFill alloc] init]
+        fill.setColor([MSColor blackColor])
+        fill.setOpacity(0.5)
+        maskLayer.style().fills().addObject(fill)
+
+        [group addLayers:[imageLayer, maskLayer]]
+
+        var mainImageFrame = NSMakeRect(98, 12, 147, 147)
+        var mainImageLayer = [[MSBitmapLayer alloc] initWithFrame:mainImageFrame]
+        mainImageLayer.name = "Playlist Image"
+        mainImageLayer.image = backgroundImageData
+
+        var tracks = playlist.tracks
+        if (![tracks isKindOfClass:[NSArray class]]) {
+            tracks = tracks.data
+        }
+
+        log(tracks)
+
+        var song1ImageURL = tracks[0].album.images[1].url
+        var song1ImageFrame = NSMakeRect(20, 32, 108, 108)
+        var song1ImageLayer = [[MSBitmapLayer alloc] initWithFrame:song1ImageFrame]
+        var song1URL = [NSURL URLWithString:toNSString(song1ImageURL)]
+        var song1Image = [[NSImage alloc] initWithContentsOfURL:song1URL]
+        var song1ImageData = [[MSImageData alloc] initWithImage:song1Image convertColorSpace:true]
+        song1ImageLayer.name = "Song Image 1"
+        song1ImageLayer.image = song1ImageData
+
+        var song2ImageURL = tracks[1].album.images[1].url
+        var song2ImageFrame = NSMakeRect(216, 32, 108, 108)
+        var song2ImageLayer = [[MSBitmapLayer alloc] initWithFrame:song2ImageFrame]
+        var song2URL = [NSURL URLWithString:toNSString(song2ImageURL)]
+        var song2Image = [[NSImage alloc] initWithContentsOfURL:song2URL]
+        var song2ImageData = [[MSImageData alloc] initWithImage:song2Image convertColorSpace:true]
+        song2ImageLayer.name = "Song Image 2"
+        song2ImageLayer.image = song2ImageData
+
+        var name = playlist.title
+        group.name = name
+        var playlistNameFrame = NSMakeRect(0, 180, 343, 20)
+        var playlistField = [[MSTextLayer alloc] initWithFrame:playlistNameFrame]
+        playlistField.name = name
+        playlistField.setStringValue(name)
+        playlistField.setFont([NSFont systemFontOfSize:16])
+
+        [group addLayers:[playlistField, song1ImageLayer, song2ImageLayer, mainImageLayer]]
+
+        [totalGroup addLayers:[group]]
+    }
+    doc.currentPage().addLayers([totalGroup])
+}

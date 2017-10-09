@@ -1,0 +1,419 @@
+//
+// kkbox.cocoascript
+//
+// Copyright (c) 2017 KKBOX Taiwan Co., Ltd. All Rights Reserved.
+//
+
+var charts = {
+    "mandrin": {
+        "id": "8m6bbC8bdzM77nF1G0",
+        "title": "華語人氣日榜 Top 100"
+    },
+    "western": {
+        "id": "XZ8kWYKCDBlbpYDL-c",
+        "title": "西洋人氣日榜 Top 100"
+    },
+    "korean": {
+        "id": "Cn8ISh_bvvrnBX02Rp",
+        "title": "韓語人氣日榜 Top 100"
+    },
+    "japanese": {
+        "id": "CsU2q-kItRtI7CZYDa",
+        "title": "日語人氣日榜 Top 100"
+    },
+    "hokkien": {
+        "id": "9YIVWKERuyYIcjl9oE",
+        "title": "台語人氣日榜 Top 100"
+    },
+    "cantonese": {
+        "id": "0sMzbEDZM6d4C-JFv5",
+        "title": "粵語人氣日榜 Top 100"
+    },
+    "electronic": {
+        "id": "OlKj4F1N5edzE6NzD7",
+        "title": "電子人氣日榜 Top 100"
+    },
+    "hiphop": {
+        "id": "9aXrDrXcIfG-LVCTYf",
+        "title": "嘻哈人氣日榜 Top 100"
+    },
+    "rnb": {
+        "id": "CrHr6QUjBQ3cVq9Ki3",
+        "title": "R＆B人氣日榜 Top 100"
+    },
+    "jazz": {
+        "id": "Cl41lpgteTnDwSrt56",
+        "title": "爵士人氣日榜 Top 100"
+    },
+    "rock": {
+        "id": "Opj44kkG-a0GzjNiso",
+        "title": "搖滾人氣日榜 Top 100"
+    },
+    "alternative": {
+        "id": "GrD6uWSKiNRITeDrJf",
+        "title": "獨立/另類人氣日榜 Top 100"
+    },
+    "soundtrack": {
+        "id": "CkNg2HMGfJZPHhiN7x",
+        "title": "原聲帶人氣日榜 Top 100"
+    },
+    "soul": {
+        "id": "4pL8bYR4FJSOOrkrpt",
+        "title": "靈魂樂人氣日榜 Top 100"
+    },
+    "country": {
+        "id": "GlkzhcrgJoxtpSs8sB",
+        "title": "鄉村人氣日榜 Top 100"
+    },
+    "reegee": {
+        "id": "4k498aU8s3de7L6S9G",
+        "title": "雷鬼人氣日榜 Top 100"
+    },
+    "audiobook": {
+        "id": "HaONak68_aVO3l7S8w",
+        "title": "有聲書/相聲人氣日榜 Top 100"
+    },
+    "mandrin_new": {
+        "id": "D-jqNWQVi1AmuQPC93",
+        "title": "華語新歌日榜 Top 100"
+    },
+    "western_new": {
+        "id": "T_2R6EtY0IEq8QPWIz",
+        "title": "西洋新歌日榜 Top 100"
+    },
+    "korean_new": {
+        "id": "9aML7rXcIfG-LmRopw",
+        "title": "韓語新歌日榜 Top 100"
+    },
+    "japan_new": {
+        "id": "KsoRQ94AhgbL60XL2N",
+        "title": "日語新歌日榜 Top 100"
+    },
+    "hokkien_new": {
+        "id": "SlnEeV3isDBvNAnRUk",
+        "title": "台語新歌日榜 Top 100"
+    },
+    "cantonese_new": {
+        "id": "KkNnG67G_0Gg069gBF",
+        "title": "粵語新歌日榜 Top 100"
+    },
+    "soundtrack_new": {
+        "id": "PZBEjjIOMWFJr4z9VG",
+        "title": "原聲帶新歌日榜 Top 100"
+    },
+    "mix_new": {
+        "id": "WsBmMkPCp1sPkyeZZI",
+        "title": "綜合新歌日榜 Top 100"
+    },
+    "ukus": {
+        "id": "Ot9b9neLPHGat4LYK-",
+        "title": "英美金曲榜"
+    },
+    "cashbox_mandrin": {
+        "id": "__u6jEV61Qgdt4Tci1",
+        "title": "錢櫃國語點播榜"
+    },
+    "cashbox_hokkien": {
+        "id": "4r3AnG_o9kvNjwSvIr",
+        "title": "錢櫃台語點播榜"
+    },
+    "cashbox_mandrin_new": {
+        "id": "GnherLVRBEMYgp_iSG",
+        "title": "錢櫃國語新歌榜"
+    },
+    "cashbox_hokkien_new": {
+        "id": "9Y0bAhEBuyYIc1HFIc",
+        "title": "錢櫃台語新歌榜"
+    }
+}
+
+
+var access_token = function() {
+    var token = {}
+    token.access_token = ""
+    token.expires_in = ""
+    token.token_type = ""
+    token.scope = ""
+    return token
+}
+
+var toNSString = function(string) {
+    return [@"" stringByAppendingString:string]
+}
+
+var toJSON = function (data) {
+    return [NSJSONSerialization JSONObjectWithData: data options: 0 error: nil]
+}
+
+var base64 = function(string) {
+    var cocoaString = toNSString(string)
+    var data = cocoaString.dataUsingEncoding_(NSUTF8StringEncoding)
+    var base64 = data.base64Encoding()
+    return base64
+}
+
+var kkbox = function(client_id, client_secret) {
+    var OAUTH_TOKEN_URL = "https://account.kkbox.com/oauth2/token"
+
+    var self = {}
+    self.client_id = client_id
+    self.client_secret = client_secret
+    self.access_token = null
+    self.territory = 'TW'
+
+    self.fetch_access_token_by_client_credentials = function() {
+        var client_credential_base = self.client_id + ":" + self.client_secret
+        var client_credentials = base64(client_credential_base)
+
+        var request = NSMutableURLRequest.new()
+        [request setHTTPMethod:@"POST"]
+        [request setURL:[NSURL URLWithString: toNSString(OAUTH_TOKEN_URL)]]
+        var auth = [@"Basic " stringByAppendingString:client_credentials]
+        [request addValue:auth forHTTPHeaderField:@"Authorization"]
+        [request addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"]
+        [request setHTTPBody:[@"grant_type=client_credentials&scope=all" dataUsingEncoding:NSUTF8StringEncoding]]
+        try {
+            var oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil]
+            var json = toJSON(oResponseData)
+            var token = access_token()
+            token.access_token = json.access_token.toString()
+            token.token_type = json.token_type.toString()
+            token.expires_in = json.expires_in
+            self.access_token = token
+        } catch(e) {
+        }
+    }
+
+    self.fetch = function(URL) {
+        if (self.access_token == null)  {
+            return
+        }
+        var URL = toNSString(URL)
+        var request = NSMutableURLRequest.new()
+        var auth = [@"Bearer " stringByAppendingString:self.access_token.access_token]
+        [request addValue:auth forHTTPHeaderField:@"Authorization"]
+        [request setHTTPMethod:@"GET"]
+        [request setURL:[NSURL URLWithString: toNSString(URL)]]
+        var oResponseData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil]
+        var json = toJSON(oResponseData)
+        return json
+    }
+
+    self.fetch_song_track = function(song_id) {
+        var URL = "https://api.kkbox.com/v1.1/tracks/" + song_id
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_artist = function(artist_id) {
+        var URL = "https://api.kkbox.com/v1.1/artists/" + artist_id
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_albums_of_artist = function(artist_id) {
+        var URL = "https://api.kkbox.com/v1.1/artists/" + artist_id + "/albums"
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_top_tracks_of_artist = function(artist_id) {
+        var URL = "https://api.kkbox.com/v1.1/artists/" + artist_id + "/top-tracks"
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_album = function(album_id) {
+        var URL = "https://api.kkbox.com/v1.1/albums/" + album_id
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_songs_in_album = function(album_id) {
+        var URL = "https://api.kkbox.com/v1.1/albums/" + album_id + "/tracks"
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_playlist = function(playlist_id) {
+        var URL = "https://api.kkbox.com/v1.1/shared-playlists/" + playlist_id
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+	self.fetch_playlist_with_pagination = function(playlist_id, limit, offset) {
+        var URL = "https://api.kkbox.com/v1.1/shared-playlists/" + playlist_id + "/tracks"
+        URL += "?territory=" + self.territory
+        URL += "&limit=" + limit
+        URL += "&offset=" + offset
+        return self.fetch(URL)
+    }
+
+    self.search = function(keyword, types, limit, offset) {
+        var URL = "https://api.kkbox.com/v1.1/search?q=" + encodeURIComponent(keyword)
+        URL += "&type=" + types.join()
+        URL += "&territory=" + self.territory
+        URL += "&limit=" + limit
+        URL += "&offset=" + offset
+        return self.fetch(URL)
+    }
+
+    self.search_song = function(keyword) {
+        return self.search(keyword, ["track"], 15, 0)
+    }
+
+    self.search_album = function(keyword) {
+        return self.search(keyword, ["album"], 15, 0)
+    }
+
+    self.search_artist = function(keyword) {
+        return self.search(keyword, ["artist"], 15, 0)
+    }
+
+    self.search_playlist = function(keyword) {
+        return self.search(keyword, ["playlist"], 15, 0)
+    }
+
+    // https://docs.kkbox.codes/docs/charts
+    self.fetch_charts = function() {
+        var URL = "https://api.kkbox.com/v1.1/charts"
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_new_release_categories = function(limit, offset) {
+        var URL = "https://api.kkbox.com/v1.1/new-release-categories"
+        URL += "?territory=" + self.territory
+        URL += "&limit=" + limit
+        URL += "&offset=" + offset
+        return self.fetch(URL)
+    }
+
+    self.fetch_new_release_song_tracks = function(category_id, limit, offset) {
+        var URL = "https://api.kkbox.com/v1.1/new-release-categories/" + category_id
+        URL += "?territory=" + self.territory
+        URL += "&limit=" + limit
+        URL += "&offset=" + offset
+        return self.fetch(URL)
+    }
+
+    self.fetch_new_release_albums = function(category_id, limit, offset) {
+        var URL = "https://api.kkbox.com/v1.1/new-release-categories/" + category_id + "/albums"
+        URL += "?territory=" + self.territory
+        URL += "&limit=" + limit
+        URL += "&offset=" + offset
+        return self.fetch(URL)
+    }
+
+    self.fetch_genre_stations = function() {
+        var URL = "https://api.kkbox.com/v1.1/genre-stations"
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_genre_station = function(station_id) {
+        var URL = "https://api.kkbox.com/v1.1/genre-stations/" + station_id
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_mood_stations = function() {
+        var URL = "https://api.kkbox.com/v1.1/mood-stations"
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_mood_station = function(station_id) {
+        var URL = "https://api.kkbox.com/v1.1/mood-stations/" + station_id
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_feature_playlists = function() {
+        var URL = "https://api.kkbox.com/v1.1/featured-playlists"
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_feature_playlist_categories = function() {
+        var URL = "https://api.kkbox.com/v1.1/featured-playlist-categories"
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_feature_playlist_in_category = function(category) {
+        var URL = "https://api.kkbox.com/v1.1/featured-playlist-categories/" + category
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_feature_playlist_in_category_with_pagination = function(category, limit, offset) {
+        var URL = "https://api.kkbox.com/v1.1/featured-playlist-categories/" + category + "/playlists"
+        URL += "?territory=" + self.territory
+        URL += "&limit=" + limit
+        URL += "&offset=" + offset
+        return self.fetch(URL)
+    }
+
+    self.fetch_profile = function(user_id) {
+        var URL = "https://api.kkbox.com/v1.1/users/" + user_id
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_user_playlists = function(user_id, limit, offset) {
+        var URL = "https://api.kkbox.com/v1.1/users/" + user_id + "/shared-playlists"
+        URL += "?territory=" + self.territory
+        URL += "&limit=" + limit
+        URL += "&offset=" + offset
+        return self.fetch(URL)
+    }
+
+    self.fetch_user_album_collection = function(user_id, limit, offset) {
+        var URL = "https://api.kkbox.com/v1.1/users/" + user_id + "/album-collection"
+        URL += "?territory=" + self.territory
+        URL += "&limit=" + limit
+        URL += "&offset=" + offset
+        return self.fetch(URL)
+    }
+
+    self.fetch_user_playlist_collection = function(user_id, limit, offset) {
+        var URL = "https://api.kkbox.com/v1.1/users/" + user_id + "/playlist-collection"
+        URL += "?territory=" + self.territory
+        URL += "&limit=" + limit
+        URL += "&offset=" + offset
+        return self.fetch(URL)
+    }
+
+    self.fetch_my_profile = function() {
+        var URL = "https://api.kkbox.com/v1.1/me"
+        URL += "?territory=" + self.territory
+        return self.fetch(URL)
+    }
+
+    self.fetch_my_playlists = function(limit, offset) {
+        var URL = "https://api.kkbox.com/v1.1/me/shared-playlists"
+        URL += "?territory=" + self.territory
+        URL += "&limit=" + limit
+        URL += "&offset=" + offset
+        return self.fetch(URL)
+    }
+
+    self.fetch_my_album_collection = function(limit, offset) {
+        var URL = "https://api.kkbox.com/v1.1/me/album-collection"
+        URL += "?territory=" + self.territory
+        URL += "&limit=" + limit
+        URL += "&offset=" + offset
+        return self.fetch(URL)
+    }
+
+    self.fetch_my_playlist_collection = function() {
+        var URL = "https://api.kkbox.com/v1.1/me/playlist-collection"
+        URL += "?territory=" + self.territory
+        URL += "&limit=" + limit
+        URL += "&offset=" + offset
+        return self.fetch(URL)
+    }
+
+    return self
+}
