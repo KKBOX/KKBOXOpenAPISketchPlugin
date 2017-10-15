@@ -36,7 +36,7 @@ var render_albums = function(context, albums) {
         var imageLayer = [[MSBitmapLayer alloc] initWithFrame:imageFrame]
         var URL = [NSURL URLWithString:toNSString(imageURL)]
         var image = [[NSImage alloc] initWithContentsOfURL:URL]
-        var imageData = [[MSImageData alloc] initWithImage:image convertColorSpace:true]
+        var imageData = [[MSImageData alloc] initWithImage:image]
         [imageLayer setImage:imageData]
 
         var name = album.name
@@ -96,7 +96,7 @@ var render_artists = function(context, artists) {
         var imageLayer = [[MSBitmapLayer alloc] initWithFrame:imageFrame]
         var URL = [NSURL URLWithString:toNSString(imageURL)]
         var image = [[NSImage alloc] initWithContentsOfURL:URL]
-        var imageData = [[MSImageData alloc] initWithImage:image convertColorSpace:true]
+        var imageData = [[MSImageData alloc] initWithImage:image]
         [imageLayer setImage:imageData]
 
         var newRect = [[MSOvalShape alloc] initWithFrame:imageFrame]
@@ -143,7 +143,7 @@ var render_songs = function(context, songs) {
         var imageLayer = [[MSBitmapLayer alloc] initWithFrame:imageFrame]
         var URL = [NSURL URLWithString:toNSString(imageURL)]
         var image = [[NSImage alloc] initWithContentsOfURL:URL]
-        var imageData = [[MSImageData alloc] initWithImage:image convertColorSpace:true]
+        var imageData = [[MSImageData alloc] initWithImage:image]
         [imageLayer setImage:imageData]
 
         var name = song.name
@@ -198,7 +198,7 @@ var render_playlist_list = function(context, playlists) {
         var imageLayer = [[MSBitmapLayer alloc] initWithFrame:imageFrame]
         var URL = [NSURL URLWithString:toNSString(imageURL)]
         var image = [[NSImage alloc] initWithContentsOfURL:URL]
-        var imageData = [[MSImageData alloc] initWithImage:image convertColorSpace:true]
+        var imageData = [[MSImageData alloc] initWithImage:image]
         [imageLayer setImage:imageData]
 
         var name = playlist.title
@@ -240,7 +240,7 @@ var render_playlist_cards = function(context, playlists) {
         var imageLayer = [[MSBitmapLayer alloc] initWithFrame:backgroundImageFrame]
         var backgroundImageURL = [NSURL URLWithString:toNSString(backgroundImageURLString)]
         var backgroundImage = [[NSImage alloc] initWithContentsOfURL:backgroundImageURL]
-        var backgroundImageData = [[MSImageData alloc] initWithImage:backgroundImage convertColorSpace:true]
+        var backgroundImageData = [[MSImageData alloc] initWithImage:backgroundImage]
         imageLayer.name = "Background Image"
         imageLayer.image = backgroundImageData
 
@@ -266,14 +266,12 @@ var render_playlist_cards = function(context, playlists) {
             tracks = tracks.data
         }
 
-        log(tracks)
-
         var song1ImageURL = tracks[0].album.images[1].url
         var song1ImageFrame = NSMakeRect(20, 32, 108, 108)
         var song1ImageLayer = [[MSBitmapLayer alloc] initWithFrame:song1ImageFrame]
         var song1URL = [NSURL URLWithString:toNSString(song1ImageURL)]
         var song1Image = [[NSImage alloc] initWithContentsOfURL:song1URL]
-        var song1ImageData = [[MSImageData alloc] initWithImage:song1Image convertColorSpace:true]
+        var song1ImageData = [[MSImageData alloc] initWithImage:song1Image]
         song1ImageLayer.name = "Song Image 1"
         song1ImageLayer.image = song1ImageData
 
@@ -282,7 +280,7 @@ var render_playlist_cards = function(context, playlists) {
         var song2ImageLayer = [[MSBitmapLayer alloc] initWithFrame:song2ImageFrame]
         var song2URL = [NSURL URLWithString:toNSString(song2ImageURL)]
         var song2Image = [[NSImage alloc] initWithContentsOfURL:song2URL]
-        var song2ImageData = [[MSImageData alloc] initWithImage:song2Image convertColorSpace:true]
+        var song2ImageData = [[MSImageData alloc] initWithImage:song2Image]
         song2ImageLayer.name = "Song Image 2"
         song2ImageLayer.image = song2ImageData
 
