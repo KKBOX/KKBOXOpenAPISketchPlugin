@@ -212,9 +212,10 @@
       ]
   },
   "identifier" : "com.example.sketch.88fcea9f-80f5-44f4-8e5e-9d97fe6eb0ab",
+  "appcast": "https://raw.githubusercontent.com/KKBOX/KKBOXOpenAPISketchPlugin/master/appcast.xml",
   "version" : "1.0",
   "description" : "提供 KKBOX Open API 的各項功能",
-  "authorEmail" : "zonbleyang@kkbox.com",
+  "authorEmail" : "wzyang@kkbox.com",
   "name" : "KKBOX Open API",
-  "homepage": "https://docs.kkbox.codes"
+  "homepage": "https://github.com/KKBOX/KKBOXOpenAPISketchPlugin"
 }

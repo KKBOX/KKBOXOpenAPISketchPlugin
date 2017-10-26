@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>KKBOX OpenAPI Plug-in</title>
+    <link>https://github.com/KKBOX/GoogleTranslateSketchPlugin</link>
+    <description>Plugin to translate text layers using Google Translate</description>
+    <language>en</language>
+      <item>
+        <title>Version 1.0.1</title>
+        <description>
+          <![CDATA[
+            <ul>
+              <li>Plug-in that leverage KKBOX's OpenAPI</li>
+            </ul>
+          ]]>
+        </description>
+        <enclosure url="https://github.com/KKBOX/KKBOXOpenAPISketchPlugin/releases/tag/1.0.1" sparkle:version="1.0.1" />
+      </item>
+  </channel>
+</rss>
