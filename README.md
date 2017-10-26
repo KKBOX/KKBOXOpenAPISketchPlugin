@@ -16,9 +16,12 @@ to collect these materials.
 
 ## Requirement
 
-A Mac computer with Sketch installed. The plugin is developed and
-tested on Sketch 47. You need a valid license in order to use Sketch
-as well.
+1. A Mac computer with Sketch installed. The plugin is developed
+   andtested on Sketch 47. You need a valid license in order to use
+   Sketch as well.
+2. A valid KKBOX Open API key. You can obtain a key from KKBOX's
+   [developer site](http://developer.kkbox.com). You will need to
+   input your API keyin the setting panel of the plug-in.
 
 ## Installation
 
