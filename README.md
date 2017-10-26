@@ -27,10 +27,9 @@ Please follow the instruction to install the software.
 ### Direct Download
 
 You can [download](https://github.com/KKBOX/KKBOXOpenAPISketchPlugin/archive/master.zip)
-the plug-in directly from KKBOX's gitlab site. Unzip the downloaded
-archive, and double-click on `KKBOXOpenAPI.sketchplugin` in Finder,
-the plug-in will be installed automatically if you have Sketch
-installed.
+the plug-in directly from Github. Unzip the downloaded archive, and
+double-click on `KKBOXOpenAPI.sketchplugin` in Finder, the plug-in
+will be installed automatically if you have Sketch installed.
 
 ### Via git
 
